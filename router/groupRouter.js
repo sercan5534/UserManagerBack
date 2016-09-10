@@ -1,0 +1,39 @@
+module.exports = function(options){
+    var app = options.app
+        , express = options.express
+        , groupRouter = express.Router();
+
+
+    /**
+     * Group Detail
+     */
+    groupRouter.get('/:id',function(req,res){
+        Groups.findOne({where:{id:req.body.id}}).then(function(group){
+            if(user!=null) {
+                res.json(new ApiResponse(app.get('successCode'), app.get('successMsg'), group).getJson());
+            }
+            else{
+                res.json(new ApiResponse(app.get('noRecordErrorCode'), app.get('noRecordErrorMsg'),null).getJson());
+            }
+        });
+    });
+
+    /**
+     * Group List
+     */
+    groupRouter.get('/',function(req,res){
+        Groups.findAll().then(function(group){
+            if(user!=null) {
+                res.json(new ApiResponse(app.get('successCode'), app.get('successMsg'), group).getJson());
+            }
+            else{
+                res.json(new ApiResponse(app.get('noRecordErrorCode'), app.get('noRecordErrorMsg'),null).getJson());
+            }
+        });
+    });
+
+
+
+
+    app.use('/api/group', groupRouter);
+};
