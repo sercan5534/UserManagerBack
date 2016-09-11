@@ -70,6 +70,38 @@ module.exports = function(options){
         }
     });
 
+    /**
+     * Group Delete
+     */
+    groupRouter.delete('/:id',function(req,res){
+        var tempId = req.params.id;
+
+        User2Group.findAll({ where:{ groupId: tempId}}).then(function (data) {
+            if(data!=null && data.length>0) {
+                res.json(new ApiResponse(app.get('failCode'), app.get('failMsg')));
+            }
+            else{
+                Groups.findOne({where:{id:tempId}}).then(function(group){
+                    if(group!=null) {
+                        Groups.destroy({where:{id:tempId}}).then(function(deleteData) {
+                            if (deleteData != null) {
+                                res.json(new ApiResponse(app.get('successCode'), app.get('successMsg'), deleteData).getJson());
+                            }
+                            else{
+
+                                res.json(new ApiResponse(app.get('failCode'), app.get('failMsg')));
+                            }
+                        });
+                    }
+                    else{
+                        res.json(new ApiResponse(app.get('noRecordErrorCode'), app.get('noRecordErrorMsg'),null).getJson());
+                    }
+                });
+            }
+        })
+
+    });
+
 
     app.use('/api/group', groupRouter);
 };

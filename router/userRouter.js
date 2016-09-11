@@ -32,6 +32,31 @@ module.exports = function(options){
     });
 
     /**
+     * User List According to Group ID
+     */
+    userRouter.get('/all/:id',function(req,res){
+        User2Group.findAll({ where:{ groupId: req.params.id}}).then(function (data) {
+            if(data!=null && data.length>0) {
+                var arr = [];
+                for (var i = 0 ; i< data.length; i++){
+                    arr.push(data[i].userId);
+                }
+                Users.findAll({ where:{ id: { $in: arr }}}).then(function(user) {
+                    if (user != null) {
+                        res.json(new ApiResponse(app.get('successCode'), app.get('successMsg'), user).getJson());
+                    }
+                    else {
+                        res.json(new ApiResponse(app.get('noRecordErrorCode'), app.get('noRecordErrorMsg'), null).getJson());
+                    }
+                });
+            }
+            else{
+                res.json(new ApiResponse(app.get('noRecordErrorCode'), app.get('noRecordErrorMsg'),null).getJson());
+            }
+        });
+    });
+
+    /**
      * User Delete
      */
     userRouter.delete('/:id',function(req,res){
@@ -83,7 +108,7 @@ module.exports = function(options){
                         description: d.description
                     }).then(function(data){
                         if(data) {
-                            var bulkdata = []
+                            var bulkdata = [];
                             //todo check group id
                             for (var i = 0 ; i < req.body.groupList.length; i++){
                                 bulkdata.push({ groupId:req.body.groupList, userId:data.id})
