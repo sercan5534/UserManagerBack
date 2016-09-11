@@ -8,7 +8,7 @@ module.exports = function(options){
      */
     userRouter.get('/',function(req,res){
         Users.findAll().then(function(list){
-            if(user!=null) {
+            if(list!=null && list.length > 0) {
                 res.json(new ApiResponse(app.get('successCode'), app.get('successMsg'), list).getJson());
             }
             else{
