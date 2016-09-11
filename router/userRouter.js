@@ -92,7 +92,7 @@ module.exports = function(options){
      */
     userRouter.post('/',function(req,res){
         try{
-            if(!req.body.name && !req.body.email && !req.body.groupList && req.body.groupList.length == 0){
+            if(!req.body.name && !req.body.email && !req.body.groupList){
                 throw new MissingParametersException();
             }
 
@@ -108,14 +108,10 @@ module.exports = function(options){
                         description: d.description
                     }).then(function(data){
                         if(data) {
-                            var bulkdata = [];
-                            //todo check group id
-                            for (var i = 0 ; i < req.body.groupList.length; i++){
-                                bulkdata.push({ groupId:req.body.groupList, userId:data.id})
-                            }
-                            User2Group.bulkCreate(bulkdata).then(function () {
-                               //no control in sequalize, perhaps check data count :/
-                               res.json(new ApiResponse(app.get('successCode'), app.get('successRegistrationMsg'),null).getJson());
+
+                            User2Group.create({ userId: data.id , groupId:d.groupList}).then(function (relationData) {
+
+                               res.json(new ApiResponse(app.get('successCode'), app.get('successRegistrationMsg'),relationData).getJson());
                             });
                         }
                         else{
