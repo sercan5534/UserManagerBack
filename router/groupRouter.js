@@ -32,7 +32,43 @@ module.exports = function(options){
         });
     });
 
+    /**
+     * Group Create
+     */
+    groupRouter.post('/',function(req,res){
+        try{
+            if(!req.body.name){
+                throw new MissingParametersException();
+            }
 
+            Groups.findAll({ where:{ name : req.body.name }}).then(function(group){
+                if(group.length > 0){
+                    res.json(new ApiResponse(app.get('duplicateRecordCode'),app.get('duplicateUserRecordMsg'),null).getJson());
+                }
+                else{
+                    var d = req.body;
+                    Groups.create({
+                        name: d.name
+                    }).then(function(data){
+                        if(data) {
+                            res.json(new ApiResponse(app.get('successCode'), app.get('successMsg'),data).getJson());
+                        }
+                        else{
+                            res.json(new ApiResponse(app.get('failCode'), app.get('failMsg'),null).getJson());
+                        }
+                    });
+                }
+            });
+        }
+        catch (ex){
+            if(ex instanceof MissingParametersException){
+                res.json(new ApiResponse(app.get('missingParamErrorCode'),app.get('missingParamErrorMsg'),null).getJson());
+            }
+            else {
+                res.json(new ApiResponse(app.get('failCode'), app.get('failMsg'),null).getJson());
+            }
+        }
+    });
 
 
     app.use('/api/group', groupRouter);
