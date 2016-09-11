@@ -4,6 +4,20 @@ module.exports = function(options){
         , userRouter = express.Router();
 
     /**
+     * User List
+     */
+    userRouter.get('/',function(req,res){
+        Users.findAll().then(function(list){
+            if(user!=null) {
+                res.json(new ApiResponse(app.get('successCode'), app.get('successMsg'), list).getJson());
+            }
+            else{
+                res.json(new ApiResponse(app.get('noRecordErrorCode'), app.get('noRecordErrorMsg'),null).getJson());
+            }
+        });
+    });
+
+    /**
      * User Detail
      */
     userRouter.get('/:id',function(req,res){
