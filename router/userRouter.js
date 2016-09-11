@@ -21,7 +21,7 @@ module.exports = function(options){
      * User Detail
      */
     userRouter.get('/:id',function(req,res){
-        Users.findOne({where:{id:req.body.id}}).then(function(user){
+        Users.findOne({where:{id:req.query.id}}).then(function(user){
             if(user!=null) {
                 res.json(new ApiResponse(app.get('successCode'), app.get('successMsg'), user).getJson());
             }
@@ -35,11 +35,12 @@ module.exports = function(options){
      * User Delete
      */
     userRouter.delete('/:id',function(req,res){
-        Users.findOne({where:{id:req.body.id}}).then(function(user){
+        var tempId = req.query.id;
+        Users.findOne({where:{id:tempId}}).then(function(user){
             if(user!=null) {
-                User2Group.delete({where:{userId:req.body.id}}).then(function(data) {
+                User2Group.delete({where:{userId:tempId}}).then(function(data) {
                     if (data != null) {
-                        Users.delete({where:{id:req.body.id}}).then(function(deleteData) {
+                        Users.delete({where:{id:tempId}}).then(function(deleteData) {
                             if (deleteData != null) {
                                 res.json(new ApiResponse(app.get('successCode'), app.get('successMsg'), deleteData).getJson());
                             }
@@ -114,12 +115,12 @@ module.exports = function(options){
      * User Assign a group
      */
     userRouter.get('/assign/:userId/:groupId',function(req,res){
-        User2Group.findOne({where:{userId:req.body.userId,groupId:req.body.groupId}}).then(function(user){
+        User2Group.findOne({where:{userId:req.query.userId,groupId:req.query.groupId}}).then(function(user){
             if(user!=null) {
                 res.json(new ApiResponse(app.get('duplicateRecordCode'), app.get('duplicateRecordMsg')).getJson());
             }
             else {
-                User2Group.create({userId: req.body.userId, groupId: req.body.groupId}).then(function (data) {
+                User2Group.create({userId: req.query.userId, groupId: req.query.groupId}).then(function (data) {
                     if (data) {
                         res.json(new ApiResponse(app.get('successCode'), app.get('successRegistrationMsg')));
                     }

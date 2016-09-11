@@ -8,7 +8,7 @@ module.exports = function(options){
      * Group Detail
      */
     groupRouter.get('/:id',function(req,res){
-        Groups.findOne({where:{id:req.body.id}}).then(function(group){
+        Groups.findOne({where:{id:req.query.id}}).then(function(group){
             if(group!=null) {
                 res.json(new ApiResponse(app.get('successCode'), app.get('successMsg'), group).getJson());
             }
