@@ -12,7 +12,13 @@ require('./app.exceptions');
 
 app.set('port', (process.env.PORT || 5000));
 
-app.use(cors);
+app.options('/login', function (req, res) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader('Access-Control-Allow-Methods', '*');
+    res.setHeader("Access-Control-Allow-Headers", "*");
+    res.end();
+});
+
 
 //BODY PARSING
 app.use(bodyParser.urlencoded({ extended: false }));
