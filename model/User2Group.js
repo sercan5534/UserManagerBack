@@ -1,5 +1,5 @@
 module.exports = function(sequelize,DataTypes){
-    return sequelize.define('Users',{
+    return sequelize.define('Users2Group',{
         id:{ type:DataTypes.INTEGER, primaryKey:true, autoIncrement:true},
         groupId: {
             type: DataTypes.INTEGER,
