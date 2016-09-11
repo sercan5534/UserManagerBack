@@ -1,14 +1,14 @@
 ApiResponse = function(code,msg,data){
     this.code = code;
-    this.msg = msg;
+    this.message = msg;
     this.data = data;
 }
 
 ApiResponse.prototype={
     code:null,
-    msg:'',
+    message:'',
     data:null,
     getJson : function () {
-        return { code: this.code, message:this.msg,data:this.data }
+        return { code: this.code, message:this.message,data:this.data }
     }
 }
