@@ -38,9 +38,9 @@ module.exports = function(options){
         var tempId = req.params.id;
         Users.findOne({where:{id:tempId}}).then(function(user){
             if(user!=null) {
-                User2Group.delete({where:{userId:tempId}}).then(function(data) {
+                User2Group.destroy({where:{userId:tempId}}).then(function(data) {
                     if (data != null) {
-                        Users.delete({where:{id:tempId}}).then(function(deleteData) {
+                        Users.destroy({where:{id:tempId}}).then(function(deleteData) {
                             if (deleteData != null) {
                                 res.json(new ApiResponse(app.get('successCode'), app.get('successMsg'), deleteData).getJson());
                             }
