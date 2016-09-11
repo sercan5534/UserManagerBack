@@ -9,7 +9,7 @@ module.exports = function(options){
      */
     groupRouter.get('/:id',function(req,res){
         Groups.findOne({where:{id:req.body.id}}).then(function(group){
-            if(user!=null) {
+            if(group!=null) {
                 res.json(new ApiResponse(app.get('successCode'), app.get('successMsg'), group).getJson());
             }
             else{
@@ -23,7 +23,7 @@ module.exports = function(options){
      */
     groupRouter.get('/',function(req,res){
         Groups.findAll().then(function(group){
-            if(user!=null) {
+            if(group!=null) {
                 res.json(new ApiResponse(app.get('successCode'), app.get('successMsg'), group).getJson());
             }
             else{

@@ -58,7 +58,7 @@ module.exports = function(options){
 
             Users.findAll({ where:{ email : req.body.email }}).then(function(user){
                 if(user.length > 0){
-                    res.json(new ApiResponse(app.get('duplicateRecordCode'),app.get('duplicateUserRecordMsg')));
+                    res.json(new ApiResponse(app.get('duplicateRecordCode'),app.get('duplicateUserRecordMsg'),null).getJson());
                 }
                 else{
                     var d = req.body;
@@ -75,11 +75,11 @@ module.exports = function(options){
                             }
                             User2Group.bulkCreate(bulkdata).then(function () {
                                //no control in sequalize, perhaps check data count :/
-                               res.json(new ApiResponse(app.get('successCode'), app.get('successRegistrationMsg')));
+                               res.json(new ApiResponse(app.get('successCode'), app.get('successRegistrationMsg'),null).getJson());
                             });
                         }
                         else{
-                            res.json(new ApiResponse(app.get('failCode'), app.get('failMsg')));
+                            res.json(new ApiResponse(app.get('failCode'), app.get('failMsg'),null).getJson());
                         }
                     });
                 }
@@ -87,10 +87,10 @@ module.exports = function(options){
         }
         catch (ex){
             if(ex instanceof MissingParametersException){
-                res.json(new ApiResponse(app.get('missingParamErrorCode'),app.get('missingParamErrorMsg')));
+                res.json(new ApiResponse(app.get('missingParamErrorCode'),app.get('missingParamErrorMsg'),null).getJson());
             }
             else {
-                res.json(new ApiResponse(app.get('failCode'), app.get('failMsg')));
+                res.json(new ApiResponse(app.get('failCode'), app.get('failMsg'),null).getJson());
             }
         }
     });
