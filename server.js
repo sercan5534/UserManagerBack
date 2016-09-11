@@ -27,6 +27,7 @@ require('./app.model.js');
 
 //ROUTES
 var params = { app:app,express:express};
+require('./router/welcomeRouter.js')(params);
 require('./router/groupRouter.js')(params);
 require('./router/userRouter.js')(params);
 
