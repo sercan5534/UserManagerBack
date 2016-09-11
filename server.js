@@ -14,7 +14,11 @@ app.set('port', (process.env.PORT || 5000));
 //BODY PARSING
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next();
+});
 //LOGGING
 app.use(morgan('dev'));
 
