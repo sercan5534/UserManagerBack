@@ -78,7 +78,7 @@ module.exports = function(options){
 
         User2Group.findAll({ where:{ groupId: tempId}}).then(function (data) {
             if(data!=null && data.length>0) {
-                res.json(new ApiResponse(app.get('failCode'), app.get('failMsg')));
+                res.json(new ApiResponse(app.get('failCode'), app.get('failMsg'),null).getJson());
             }
             else{
                 Groups.findOne({where:{id:tempId}}).then(function(group){
@@ -89,7 +89,7 @@ module.exports = function(options){
                             }
                             else{
 
-                                res.json(new ApiResponse(app.get('failCode'), app.get('failMsg')));
+                                res.json(new ApiResponse(app.get('failCode'), app.get('failMsg'),null).getJson());
                             }
                         });
                     }
